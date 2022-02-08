@@ -57,12 +57,36 @@ class Othello_api:
     def update_room(self, room_list_server):
         # print("Room List")
         self.room_list = room_list_server
+    
+    def game_end(self):
+        score = self.game_info['placeable'][1]
+        if(score[0] > score[1]):
+            if(self.game_info['player'][0] == self.socket_id):
+                print("You WIN")
+            else:
+                print("You LOSE")
+        elif(score[1] > score[0]):
+            if(self.game_info['player'][1] == self.socket_id):
+                print("You WIN")
+            else:
+                print("You LOSE")
+        else:
+            print("Draw")
+        print("Score ",score)
+        return
 
     def handle_room_info(self, room_info, game_info):
         self.room_info = room_info
         self.game_info = game_info
-        if(self.game_info['turn'] == self.socket_id):
-            self.ai_put_stone()
+        # print(self.room_info)
+        print(self.game_info)
+        if(len(self.game_info['placeable']) != 0):
+            if(self.game_info['placeable'][3] == -1):
+                self.game_end()
+                return
+            elif(self.game_info['turn'] == self.socket_id):
+                self.ai_put_stone()
+                return
 
     def get_socket_id(self):
         self.sio.emit('get_id')
@@ -87,10 +111,11 @@ class Othello_api:
         print()
 
     def put_stone(self, index):
-        print(self.game_info['turn'], self.socket_id)
         if(self.game_info['turn'] == self.socket_id):
-            print("put stone!!!!!!!!")
+            print("put stone ",self.game_info['placeable'][0][index])
             self.sio.emit("put_stone", { 'index' : index })
+
+
 
     def game_loop(self):
         while(self.status):
@@ -119,11 +144,13 @@ class Othello_api:
                         print(" (you)", end='')
                     print(" has ",self.game_info['placeable'][1][i]," stone onboard")
                 self.print_board(self.game_info['board'])
-                if(self.game_info['turn'] == self.socket_id):
-                    print("your turn!!!!\n you can place here")
-                    for i in range(len(self.game_info['placeable'][0])):
-                        print(i," :",self.game_info['placeable'][0])
-                    print("press index to put")
+                if(self.game_info['placeable'][3] != -1):
+                    if(self.game_info['turn'] == self.socket_id):
+                        print("your turn!!!!\n you can place here")
+                        for i in range(len(self.game_info['placeable'][0])):
+                            print(i," :",self.game_info['placeable'][0][i])
+                        print("press index to put")
+                
                 command = input()
                 if (len(command.split()) == 0):
                     continue
@@ -164,7 +191,7 @@ class Othello_api:
     def ai_put_stone(self):
 
         # code here!!!!!
-
+        self.put_stone(0);
         return
         
 
