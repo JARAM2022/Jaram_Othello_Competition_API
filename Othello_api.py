@@ -3,7 +3,7 @@ import socketio
 
 class Othello_api:
     sio = socketio.Client()
-    def __init__(self, server = 'http://http://othello-api.jaram.net/'):
+    def __init__(self, server = 'http://othello-api.jaram.net/'):
         self.server = server
         self.socket_id = ''
         # 0 : lobby / 1: in game
@@ -79,7 +79,7 @@ class Othello_api:
         self.room_info = room_info
         self.game_info = game_info
         # print(self.room_info)
-        print(self.game_info)
+        # print(self.game_info)
         if(len(self.game_info['placeable']) != 0):
             if(self.game_info['placeable'][3] == -1):
                 self.game_end()
