@@ -3,7 +3,7 @@ import socketio
 
 class Othello_api:
     sio = socketio.Client()
-    def __init__(self, server = 'http://localhost:3000'):
+    def __init__(self, server = 'http://http://othello-api.jaram.net/'):
         self.server = server
         self.socket_id = ''
         # 0 : lobby / 1: in game
@@ -191,7 +191,7 @@ class Othello_api:
     def ai_put_stone(self):
 
         # code here!!!!!
-        self.put_stone(0);
+        
         return
         
 
