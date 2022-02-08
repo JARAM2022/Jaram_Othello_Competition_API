@@ -110,10 +110,14 @@ class Othello_api:
             print()
         print()
 
+    def mk_test_ai_room(self):
+        self.sio.emit("join_ai")
+
     def put_stone(self, index):
         if(self.game_info['turn'] == self.socket_id):
             print("put stone ",self.game_info['placeable'][0][index])
             self.sio.emit("put_stone", { 'index' : index })
+
 
 
 
@@ -164,7 +168,7 @@ class Othello_api:
 
     def lobby_loop(self):
         while(not self.status):
-            print("your id : ",self.socket_id,"\nroom list\n",self.room_list,"\ncommand list\nno input: pass(update)\n1 : update room list\n2 : make room\n3 : join room (input \'3 room_index\')")
+            print("your id : ",self.socket_id,"\nroom list\n",self.room_list,"\ncommand list\nno input: pass(update)\n1 : update room list\n2 : make room\n3 : join room (input \'3 room_index\')\n4 : fight test ai\n")
             command = input()
             if (len(command.split()) == 0):
                 continue
@@ -177,6 +181,8 @@ class Othello_api:
                     self.join_room(self.room_list[int(command.split()[1])]['room_id'])
                 else:
                     print("\n\ninput room index!!!!!!!")
+            elif command.split()[0] == '4':
+                self.mk_test_ai_room()
             else:
                 pass
             print()
